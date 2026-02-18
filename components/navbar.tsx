@@ -59,7 +59,9 @@ export function Navbar() {
             className="text-4xl text-accent drop-shadow-[0_0_12px_var(--orange-glow)] transition-all duration-300 group-hover:drop-shadow-[0_0_20px_var(--orange-glow)]"
             style={{ fontFamily: "var(--font-script)", lineHeight: 1 }}
           >
-            AT
+            <span className="inline-block">A</span>
+            <span className="mx-2 text-accent/90">|</span>
+            <span className="inline-block">T</span>
           </span>
           <span className="absolute -bottom-0.5 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
         </a>
