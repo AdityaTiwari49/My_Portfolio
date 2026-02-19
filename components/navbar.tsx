@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, Download } from "lucide-react"
+import { Menu, X, Download, ShieldCheck } from "lucide-react"
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -20,14 +20,14 @@ export function Navbar() {
 
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 50)
+      setScrolled(window.scrollY > 20)
 
       const sections = navLinks.map((l) => l.href.slice(1))
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i])
         if (el) {
           const rect = el.getBoundingClientRect()
-          if (rect.top <= 120) {
+          if (rect.top <= 150) {
             setActiveSection(sections[i])
             return
           }
@@ -36,118 +36,138 @@ export function Navbar() {
       setActiveSection("")
     }
     window.addEventListener("scroll", onScroll, { passive: true })
+    onScroll()
     return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "glass-strong shadow-lg shadow-black/10"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a
-          href="#"
-          className="group relative flex items-center gap-0.5"
-        >
-          <span
-            className="text-4xl text-accent drop-shadow-[0_0_12px_var(--orange-glow)] transition-all duration-300 group-hover:drop-shadow-[0_0_20px_var(--orange-glow)]"
-            style={{ fontFamily: "var(--font-script)", lineHeight: 1 }}
-          >
-            <span className="inline-block">A</span>
-            <span className="mx-2 text-accent/90">|</span>
-            <span className="inline-block">T</span>
-          </span>
-          <span className="absolute -bottom-0.5 left-0 right-0 h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
-        </a>
-
-        {/* Desktop Links */}
-        <div className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className={`relative text-sm font-medium transition-colors duration-200 ${
-                activeSection === link.href.slice(1)
-                  ? "text-accent"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
-            >
-              {link.label}
-              {activeSection === link.href.slice(1) && (
-                <motion.span
-                  layoutId="nav-underline"
-                  className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent rounded-full"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
-              )}
-            </a>
-          ))}
-          <a
-            href="/resume.pdf"
-            download
-            className="flex items-center gap-2 rounded-lg bg-accent px-4 py-2 text-sm font-medium text-accent-foreground transition-all duration-300 hover:shadow-lg hover:shadow-accent/25"
-          >
-            <Download className="h-4 w-4" />
-            Resume
+    <header className="fixed top-0 left-0 right-0 z-[100] px-6 py-6 transition-all duration-500 pointer-events-none">
+      <motion.nav
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] }}
+        className={`mx-auto max-w-5xl rounded-full border transition-all duration-500 pointer-events-auto ${scrolled || mobileOpen
+          ? "border-zinc-200/60 bg-white/70 backdrop-blur-xl px-8 py-3 shadow-lg shadow-black/[0.03]"
+          : "border-white/10 bg-transparent px-4 py-4"
+          }`}
+      >
+        <div className="flex items-center justify-between">
+          {/* Logo Section */}
+          <a href="#" className="group flex items-center gap-3">
+            <div className={`relative flex h-10 w-10 items-center justify-center rounded-xl transition-all duration-500 group-hover:scale-110 ${scrolled || mobileOpen ? "bg-foreground text-background" : "bg-white text-black"}`}>
+              <span className="text-xl font-black">A</span>
+              {/* Logo Glow */}
+              <div className={`absolute inset-0 rounded-xl opacity-0 blur-lg transition-opacity group-hover:opacity-10 ${scrolled || mobileOpen ? "bg-foreground" : "bg-white"}`} />
+            </div>
+            <div className="hidden flex-col sm:flex">
+              <span
+                className={`text-xl transition-colors duration-500 leading-tight ${scrolled || mobileOpen ? "text-foreground" : "text-white"}`}
+                style={{ fontFamily: "var(--font-script), 'Alex Brush', cursive" }}
+              >
+                Aditya Tiwari
+              </span>
+              <span className="text-[8px] font-bold tracking-[0.25em] text-zinc-400 uppercase">Strategic Engineer</span>
+            </div>
           </a>
-        </div>
 
-        {/* Mobile Toggle */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="relative z-50 md:hidden text-foreground"
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-        >
-          {mobileOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden glass-strong md:hidden"
-          >
-            <div className="flex flex-col gap-1 px-6 py-4">
-              {navLinks.map((link, i) => (
-                <motion.a
+          {/* Desktop Navigation */}
+          <div className="hidden items-center gap-10 lg:flex">
+            <div className="flex items-center gap-8">
+              {navLinks.map((link) => (
+                <a
                   key={link.href}
                   href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                  className={`rounded-lg px-4 py-3 text-sm font-medium transition-colors duration-200 ${
-                    activeSection === link.href.slice(1)
-                      ? "bg-accent/10 text-accent"
-                      : "text-muted-foreground hover:bg-muted/50 hover:text-foreground"
-                  }`}
+                  className={`group relative text-[10px] font-bold uppercase tracking-[0.2em] transition-colors duration-300 ${activeSection === link.href.slice(1)
+                    ? "text-primary"
+                    : scrolled || mobileOpen ? "text-zinc-500 hover:text-foreground" : "text-zinc-400 hover:text-white"
+                    }`}
                 >
                   {link.label}
-                </motion.a>
+                  {/* Indicator */}
+                  {activeSection === link.href.slice(1) && (
+                    <motion.div
+                      layoutId="nav-indicator"
+                      className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-primary rounded-full"
+                    />
+                  )}
+                </a>
               ))}
+            </div>
+
+            <div className={`h-4 w-[1px] transition-colors duration-500 ${scrolled || mobileOpen ? "bg-zinc-200" : "bg-white/10"}`} />
+
+            <a
+              href="/resume.pdf"
+              download
+              className={`group flex items-center gap-2 rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-background transition-all hover:scale-105 active:scale-95 ${scrolled || mobileOpen ? "bg-foreground text-background" : "bg-white text-black"}`}
+            >
+              <Download className="h-3 w-3" />
+              Resume
+            </a>
+          </div>
+
+          {/* Mobile Actions */}
+          <div className="flex items-center gap-4 lg:hidden">
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className={`relative flex h-10 w-10 items-center justify-center rounded-xl transition-all active:scale-90 ${scrolled || mobileOpen ? "bg-zinc-100 text-foreground" : "bg-white/10 text-white"}`}
+              aria-label="Toggle menu"
+            >
+              <div className="relative h-4 w-4">
+                <motion.span
+                  animate={mobileOpen ? { rotate: 45, y: 6 } : { rotate: 0, y: 0 }}
+                  className="absolute top-0 left-0 block h-[1.5px] w-4 bg-current transition-transform"
+                />
+                <motion.span
+                  animate={mobileOpen ? { opacity: 0 } : { opacity: 1 }}
+                  className="absolute top-[7px] left-0 block h-[1.5px] w-4 bg-current transition-opacity"
+                />
+                <motion.span
+                  animate={mobileOpen ? { rotate: -45, y: -6 } : { rotate: 0, y: 12 }}
+                  className="absolute top-0 left-0 block h-[1.5px] w-4 bg-current transition-transform"
+                />
+              </div>
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile Menu Overlay */}
+        <AnimatePresence>
+          {mobileOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
+              className="lg:hidden overflow-hidden pt-6"
+            >
+              <div className="grid grid-cols-2 gap-3 pb-6">
+                {navLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`flex items-center justify-center rounded-2xl border p-5 text-[10px] font-bold uppercase tracking-[0.2em] transition-all ${activeSection === link.href.slice(1)
+                      ? "border-primary/20 bg-primary/5 text-primary shadow-sm"
+                      : "border-zinc-100 bg-white text-zinc-500"
+                      }`}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
               <a
                 href="/resume.pdf"
                 download
-                className="mt-2 flex items-center justify-center gap-2 rounded-lg bg-accent px-4 py-3 text-sm font-medium text-accent-foreground"
+                className="mb-6 flex items-center justify-center gap-3 rounded-2xl bg-foreground py-5 text-[10px] font-bold uppercase tracking-[0.2em] text-background transition-all active:scale-95 shadow-lg shadow-black/10"
               >
                 <Download className="h-4 w-4" />
-                Download Resume
+                Download Portfolio PDF
               </a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.nav>
+    </header>
   )
 }

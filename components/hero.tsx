@@ -1,211 +1,227 @@
 "use client"
 
-import { motion } from "framer-motion"
-import { ArrowDown, Send } from "lucide-react"
+import { motion, useScroll, useTransform } from "framer-motion"
+import { Mail, Github, Linkedin, FileText, Sparkles } from "lucide-react"
+import { useRef } from "react"
 
-function FloatingTriangle({
-  size,
-  x,
-  y,
-  delay,
-  duration,
-  opacity,
-  rotation,
-}: {
-  size: number
-  x: string
-  y: string
-  delay: number
-  duration: number
-  opacity: number
-  rotation: number
-}) {
+function ConnectionLines() {
   return (
-    <motion.div
-      className="absolute"
-      style={{ left: x, top: y }}
-      initial={{ opacity: 0, rotate: rotation }}
-      animate={{
-        opacity: [0, opacity, opacity, 0],
-        rotate: [rotation, rotation + 15, rotation - 10, rotation],
-        y: [0, -30, 10, 0],
-        x: [0, 10, -10, 0],
-      }}
-      transition={{
-        duration,
-        delay,
-        repeat: Infinity,
-        ease: "easeInOut",
-      }}
-    >
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 100 100"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <polygon
-          points="50,10 90,85 10,85"
-          stroke="var(--orange-glow)"
-          strokeWidth="1"
+    <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none opacity-[0.3]">
+      <svg className="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+        <motion.path
+          d="M-10,20 Q30,50 80,-10"
           fill="none"
-          opacity="0.5"
+          stroke="oklch(0.60 0.18 270)"
+          strokeWidth="0.1"
+          animate={{ strokeDashoffset: [100, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          style={{ strokeDasharray: "1, 2" }}
+        />
+        <motion.path
+          d="M110,60 Q70,30 20,110"
+          fill="none"
+          stroke="oklch(0.60 0.18 270)"
+          strokeWidth="0.1"
+          animate={{ strokeDashoffset: [0, 100] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+          style={{ strokeDasharray: "1, 2" }}
+        />
+        <motion.path
+          d="M40,-20 Q60,50 40,120"
+          fill="none"
+          stroke="oklch(0.70 0.12 350)"
+          strokeWidth="0.05"
+          animate={{ strokeDashoffset: [100, 0] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          style={{ strokeDasharray: "0.5, 3" }}
+        />
+        {/* Extra artistic arcs */}
+        <motion.path
+          d="M0,80 Q50,40 100,70"
+          fill="none"
+          stroke="oklch(0.70 0.12 350)"
+          strokeWidth="0.06"
+          animate={{ strokeDashoffset: [80, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
+          style={{ strokeDasharray: "0.8, 2.5" }}
         />
       </svg>
-    </motion.div>
+    </div>
   )
 }
 
-const triangles = [
-  { size: 60, x: "10%", y: "15%", delay: 0, duration: 8, opacity: 0.25, rotation: 0 },
-  { size: 40, x: "85%", y: "10%", delay: 1, duration: 10, opacity: 0.2, rotation: 30 },
-  { size: 80, x: "70%", y: "60%", delay: 2, duration: 12, opacity: 0.15, rotation: 45 },
-  { size: 50, x: "20%", y: "70%", delay: 0.5, duration: 9, opacity: 0.25, rotation: 15 },
-  { size: 35, x: "50%", y: "20%", delay: 3, duration: 11, opacity: 0.15, rotation: 60 },
-  { size: 70, x: "40%", y: "80%", delay: 1.5, duration: 10, opacity: 0.12, rotation: -20 },
-  { size: 45, x: "90%", y: "40%", delay: 2.5, duration: 8, opacity: 0.2, rotation: 10 },
-  { size: 55, x: "5%", y: "45%", delay: 0.8, duration: 9, opacity: 0.15, rotation: -30 },
-]
-
 export function Hero() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  })
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"])
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0])
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-hero-bg noise-overlay">
-      {/* Gradient mesh background */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "radial-gradient(ellipse at 20% 30%, oklch(0.72 0.17 55 / 0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 70%, oklch(0.72 0.17 55 / 0.04) 0%, transparent 50%), radial-gradient(ellipse at 50% 50%, oklch(0.20 0.005 260 / 0.5) 0%, transparent 80%)",
-        }}
-      />
+    <section
+      ref={containerRef}
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-zinc-950 selection:bg-primary/20"
+    >
+      <ConnectionLines />
 
-      {/* Orange glow orbs */}
-      <div
-        className="absolute top-1/4 left-1/4 h-72 w-72 rounded-full blur-[140px]"
-        style={{
-          background: "oklch(0.72 0.17 55 / 0.08)",
-          animation: "glow-pulse 4s ease-in-out infinite",
-        }}
-      />
-      <div
-        className="absolute bottom-1/3 right-1/4 h-56 w-56 rounded-full blur-[120px]"
-        style={{
-          background: "oklch(0.72 0.17 55 / 0.06)",
-          animation: "glow-pulse 5s ease-in-out infinite 1s",
-        }}
-      />
+      {/* Background Gradients */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 h-[500px] w-[500px] translate-x-1/2 rounded-full bg-accent/10 blur-[120px]" />
+      </div>
 
-      {/* Grid lines */}
-      <div
-        className="absolute inset-0 opacity-[0.03]"
-        style={{
-          backgroundImage:
-            "linear-gradient(oklch(0.95 0 0 / 0.3) 1px, transparent 1px), linear-gradient(90deg, oklch(0.95 0 0 / 0.3) 1px, transparent 1px)",
-          backgroundSize: "60px 60px",
-        }}
-      />
+      {/* Decorative rotated label — top-left */}
+      <motion.span
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.8, duration: 1 }}
+        className="absolute left-8 top-1/2 -translate-y-1/2 -rotate-90 origin-left text-[9px] font-bold uppercase tracking-[0.4em] text-zinc-600 hidden lg:block"
+      >
+        Full-Stack · AI/ML · Design
+      </motion.span>
 
-      {/* Floating Triangles */}
-      {triangles.map((t, i) => (
-        <FloatingTriangle key={i} {...t} />
-      ))}
+      {/* Decorative rotated label — right */}
+      <motion.span
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.8, duration: 1 }}
+        className="absolute right-8 top-1/2 -translate-y-1/2 rotate-90 origin-right text-[9px] font-bold uppercase tracking-[0.4em] text-zinc-600 hidden lg:block"
+      >
+        Delhi, India · 2025
+      </motion.span>
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto max-w-4xl px-6 text-center">
+      <motion.div
+        style={{ y, opacity }}
+        className="relative z-10 w-full max-w-7xl px-6 py-32 flex flex-col items-center text-center"
+      >
+        {/* Badge */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="mb-10 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/10 px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-primary"
         >
-          <p className="mb-6 text-sm font-medium uppercase tracking-[0.3em] text-accent/80">
-            AI / ML Enthusiast & Full Stack Developer
-          </p>
+          <Sparkles className="h-3 w-3" />
+          Engineering Excellence
         </motion.div>
 
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4, ease: "easeOut" }}
-          className="mb-6 text-5xl font-extrabold uppercase leading-none tracking-tight text-hero-foreground md:text-7xl lg:text-8xl"
-          style={{ fontFamily: "var(--font-heading)" }}
-        >
-          <span className="text-balance">
-            ADITYA{" "}
-            <span className="relative inline-block">
-              TIWARI
-              <motion.span
-                className="absolute -bottom-2 left-0 right-0 h-1 rounded-full bg-accent"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.8, delay: 1.2 }}
-                style={{ transformOrigin: "left" }}
-              />
-            </span>
-          </span>
-        </motion.h1>
-
+        {/* Cursive intro */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.6, ease: "easeOut" }}
-          className="mx-auto mb-10 max-w-2xl text-base leading-relaxed text-hero-foreground/50 md:text-lg"
+          transition={{ duration: 0.9, delay: 0.15, ease: "easeOut" }}
+          className="font-script text-2xl text-zinc-400 mb-2 tracking-wide"
+          style={{ fontFamily: "var(--font-script), 'Alex Brush', cursive" }}
         >
-          Building intelligent, scalable, and production-ready systems at the
-          intersection of robust backend engineering and practical AI.
+          Hello, I&apos;m
         </motion.p>
 
+        {/* Main Cursive Headline */}
+        <div className="relative mb-8">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="text-6xl leading-tight text-white sm:text-7xl lg:text-9xl"
+            style={{ fontFamily: "var(--font-script), 'Alex Brush', cursive" }}
+          >
+            Aditya Tiwari
+          </motion.h1>
+
+          {/* Ink underline */}
+          <motion.div
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 1.6, delay: 1, ease: "circInOut" }}
+            className="absolute -bottom-3 left-1/2 h-[3px] w-48 -translate-x-1/2 rounded-full"
+            style={{
+              background: "linear-gradient(90deg, oklch(0.60 0.18 270), oklch(0.70 0.12 350) 60%, transparent)",
+              transformOrigin: "center",
+            }}
+          />
+        </div>
+
+        {/* Sans-serif role line */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.8, ease: "easeOut" }}
+          className="mb-4 text-[11px] font-bold uppercase tracking-[0.45em] text-zinc-500"
+        >
+          Full‑Stack Engineer · AI/ML Specialist
+        </motion.p>
+
+        {/* Sub-headline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1, ease: "easeOut" }}
+          className="mb-12 max-w-2xl text-lg font-medium leading-relaxed text-zinc-400 md:text-xl"
+        >
+          I architect{" "}
+          <span className="text-white">intelligent systems</span> and
+          <span className="text-white"> scalable digital experiences</span> with technical
+          precision and creative intuition.
+        </motion.p>
+
+        {/* Actions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.8, ease: "easeOut" }}
-          className="flex flex-wrap items-center justify-center gap-4"
+          transition={{ duration: 0.8, delay: 1.2, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="flex flex-wrap items-center justify-center gap-6"
         >
           <a
             href="#projects"
-            className="group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-accent px-7 py-3.5 text-sm font-semibold text-accent-foreground transition-all duration-300 hover:shadow-xl hover:shadow-accent/30"
+            className="group relative flex items-center gap-2 overflow-hidden rounded-full bg-primary px-10 py-4 text-sm font-bold text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-primary/20 active:scale-95"
           >
-            <span className="relative z-10">View Projects</span>
-            <ArrowDown className="relative z-10 h-4 w-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+            Explore Projects
           </a>
+
           <a
             href="#contact"
-            className="group inline-flex items-center gap-2 rounded-xl border border-hero-foreground/15 px-7 py-3.5 text-sm font-semibold text-hero-foreground transition-all duration-300 hover:border-accent/50 hover:text-accent hover:bg-accent/5"
+            className="group flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-10 py-4 text-sm font-bold text-white transition-all hover:border-primary/30 hover:bg-white/10 active:scale-95"
           >
-            <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-            Contact Me
-          </a>
-          <a
-            href="/resume.pdf"
-            download
-            className="inline-flex items-center gap-2 rounded-xl border border-hero-foreground/15 px-7 py-3.5 text-sm font-semibold text-hero-foreground transition-all duration-300 hover:border-accent/50 hover:text-accent hover:bg-accent/5"
-          >
-            Download Resume
+            Get In Touch
           </a>
         </motion.div>
-      </div>
 
-      {/* Scroll indicator */}
+        {/* Social Links */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 1.6 }}
+          className="mt-24 flex items-center gap-8 text-zinc-500"
+        >
+          {[
+            { icon: Github, href: "https://github.com/AdityaTiwari49" },
+            { icon: Linkedin, href: "https://linkedin.com/in/adityatiwari49" },
+            { icon: Mail, href: "mailto:adityatiwari@example.com" },
+          ].map((item, i) => (
+            <a key={i} href={item.href} target="_blank" className="transition-colors hover:text-primary">
+              <item.icon className="h-5 w-5" />
+            </a>
+          ))}
+          <div className="h-5 w-[1px] bg-zinc-800" />
+          <a href="/resume.pdf" download className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-primary">
+            <FileText className="h-4 w-4" />
+            Resume
+          </a>
+        </motion.div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.5 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2"
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
       >
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
-          className="flex flex-col items-center gap-2"
-        >
-          <span className="text-xs text-hero-foreground/30 tracking-widest uppercase">Scroll</span>
-          <div className="h-8 w-5 rounded-full border border-hero-foreground/15 flex items-start justify-center p-1">
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-              className="h-1.5 w-1.5 rounded-full bg-accent"
-            />
-          </div>
-        </motion.div>
+        <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-500">Scroll</span>
+        <div className="h-10 w-[1px] bg-gradient-to-b from-zinc-800 to-transparent" />
       </motion.div>
     </section>
   )

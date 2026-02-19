@@ -3,89 +3,102 @@
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import { SectionWrapper } from "./section-wrapper"
-import { Award, Shield, Code2, Cpu } from "lucide-react"
+import { Award, Shield, Code2, Cpu, Sparkles, Trophy } from "lucide-react"
 
 const achievements = [
   {
-    icon: Award,
-    title: "Runner-Up at Ideathon 2.0",
+    icon: Trophy,
+    title: "Ideathon 2.0 Runner-Up",
     org: "Abhyudaya",
-    description:
-      "Secured runner-up position out of 100+ competing teams with an innovative AI-powered solution.",
+    description: "Secured top honors among 100+ teams with a disruptive AI-driven architectural solution.",
+    color: "oklch(0.60 0.18 270)",
   },
   {
     icon: Shield,
-    title: "GDG on Campus Solution Challenge",
-    org: "Google Developer Groups",
-    description:
-      "Participated in the global Google Solution Challenge building technology for social good.",
+    title: "Google Solution Challenge",
+    org: "GDG Global",
+    description: "Developing technology for social impact as part of Google's flagship global innovation program.",
+    color: "oklch(0.70 0.12 350)",
   },
   {
-    icon: Code2,
+    icon: Sparkles,
     title: "Build With Gemini",
-    org: "Google",
-    description:
-      "Certificate of Participation in Prototype and Demo video submission of Build With Gemini program.",
+    org: "Google AI",
+    description: "Recognized for prototyping and implementing high-performance generative AI workflows.",
+    color: "oklch(0.65 0.15 160)",
   },
   {
     icon: Cpu,
-    title: "Synergix Certificate",
-    org: "Synergix",
-    description:
-      "Recognized for technical contributions and project excellence during the Synergix program.",
+    title: "Synergix Technical Excellence",
+    org: "Synergix Hub",
+    description: "Awarded for exceptional technical contributions and consistent project innovation.",
+    color: "oklch(0.60 0.18 270)",
   },
   {
     icon: Award,
-    title: "6+ Hackathon Finalist",
-    org: "Various Organizers",
-    description:
-      "Reached the finals in more than 6 hackathons out of 10+ competitions, demonstrating consistent performance.",
+    title: "Consistently Finalist",
+    org: "Various Hackathons",
+    description: "Achieved finalist status in over 6 major hackathons through rigorous engineering and design.",
+    color: "oklch(0.75 0.15 55)",
   },
   {
     icon: Code2,
-    title: "Python & SQL Certifications",
+    title: "Core Certifications",
     org: "HackerRank",
-    description:
-      "Earned Python (Basic) and SQL (Basic) certificates validating core programming and database skills.",
+    description: "Validated expertise in Python and SQL through specialized technical assessments.",
+    color: "oklch(0.70 0.12 350)",
   },
 ]
 
 export function Achievements() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-80px" })
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
     <SectionWrapper
       id="achievements"
-      title="Achievements & Certifications"
-      subtitle="Recognition and credentials that highlight my journey."
+      title="Recognition of Excellence"
+      subtitle="A collection of milestones that validate my commitment to innovation and technical precision."
     >
-      <div ref={ref} className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        ref={ref}
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
         {achievements.map((item, i) => (
           <motion.div
             key={item.title}
             initial={{ opacity: 0, scale: 0.95 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.4, delay: i * 0.08, ease: "easeOut" }}
-            whileHover={{ scale: 1.02 }}
-            className="group relative overflow-hidden rounded-xl glass p-6 transition-all duration-300 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/8"
+            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className="glass-card group relative p-10 rounded-[2.5rem] border border-zinc-200/50 hover:border-primary/30 flex flex-col justify-between"
           >
-            {/* Hover glow */}
-            <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-accent/0 blur-2xl transition-all duration-500 group-hover:bg-accent/10" />
+            {/* Background Glow */}
+            <div
+              className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full blur-[100px] opacity-0 transition-opacity duration-700 group-hover:opacity-[0.08]"
+              style={{ background: item.color }}
+            />
 
-            <div className="relative">
-              <item.icon className="mb-4 h-6 w-6 text-accent transition-transform duration-300 group-hover:scale-110" />
-              <h3
-                className="mb-1 text-base font-semibold text-foreground"
-                style={{ fontFamily: "var(--font-heading)" }}
+            <div className="relative z-10">
+              <div
+                className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/5 transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/10"
+                style={{ color: item.color }}
               >
-                {item.title}
-              </h3>
-              <p className="mb-3 text-xs font-medium text-accent">{item.org}</p>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {item.description}
-              </p>
+                <item.icon className="h-7 w-7" />
+              </div>
+
+              <div className="space-y-3">
+                <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-400 group-hover:text-primary transition-colors">
+                  {item.org}
+                </p>
+                <h3 className="text-2xl font-black tracking-tighter text-foreground group-hover:text-primary transition-colors">
+                  {item.title}
+                </h3>
+              </div>
             </div>
+
+            <p className="relative z-10 mt-8 text-sm font-medium leading-relaxed text-zinc-500 group-hover:text-zinc-600 transition-colors">
+              {item.description}
+            </p>
           </motion.div>
         ))}
       </div>

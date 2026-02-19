@@ -3,114 +3,102 @@
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
 import { SectionWrapper } from "./section-wrapper"
+import { Code2, BrainCircuit, Globe, Wrench, Database } from "lucide-react"
 
 const skillCategories = [
   {
-    title: "Languages",
-    skills: [
-      { name: "Python", level: 90 },
-      { name: "C++", level: 80 },
-      { name: "JavaScript", level: 75 },
-      { name: "Java", level: 70 },
-      { name: "SQL", level: 80 },
-    ],
+    title: "AI / Machine Learning",
+    icon: BrainCircuit,
+    color: "oklch(0.60 0.18 270)",
+    description: "Building intelligent systems that learn and adapt.",
+    skills: ["Scikit-Learn", "TensorFlow", "Computer Vision", "Model Integration", "NLP"],
+    className: "md:col-span-2 md:row-span-2",
   },
   {
-    title: "AI / ML",
-    skills: [
-      { name: "Scikit-Learn", level: 85 },
-      { name: "TensorFlow", level: 70 },
-      { name: "Matplotlib", level: 80 },
-      { name: "Computer Vision", level: 65 },
-      { name: "Model Integration", level: 75 },
-    ],
+    title: "Backend Engineering",
+    icon: Database,
+    color: "oklch(0.70 0.12 350)",
+    description: "Architecting scalable and secure server-side logic.",
+    skills: ["Django", "REST APIs", "SQL", "Database Design", "System Design"],
+    className: "md:col-span-2 md:row-span-1",
   },
   {
-    title: "Web Development",
-    skills: [
-      { name: "Django", level: 85 },
-      { name: "REST APIs", level: 85 },
-      { name: "React", level: 70 },
-      { name: "Next.js", level: 65 },
-      { name: "HTML/CSS", level: 80 },
-    ],
+    title: "Core Languages",
+    icon: Code2,
+    color: "oklch(0.65 0.15 160)",
+    description: "Foundational programming with optimization in mind.",
+    skills: ["Python", "C++", "JavaScript", "DSA"],
+    className: "md:col-span-1 md:row-span-1",
   },
   {
-    title: "Tools & Others",
-    skills: [
-      { name: "Git & GitHub", level: 85 },
-      { name: "DSA (C++)", level: 80 },
-      { name: "Database Design", level: 75 },
-      { name: "Automation", level: 70 },
-      { name: "Linux", level: 65 },
-    ],
+    title: "Web Technologies",
+    icon: Globe,
+    color: "oklch(0.60 0.18 270)",
+    description: "Designing modern, responsive user interfaces.",
+    skills: ["React", "Next.js", "Tailwind CSS", "HTML/CSS"],
+    className: "md:col-span-2 md:row-span-1",
+  },
+  {
+    title: "Infrastructure",
+    icon: Wrench,
+    color: "oklch(0.75 0.15 55)",
+    description: "Ensuring reliability and performance throughout deployment.",
+    skills: ["Git", "Linux", "Docker", "Automation"],
+    className: "md:col-span-1 md:row-span-2",
   },
 ]
 
-function SkillBar({
-  name,
-  level,
-  delay,
-  isInView,
-}: {
-  name: string
-  level: number
-  delay: number
-  isInView: boolean
-}) {
-  return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-foreground">{name}</span>
-        <span className="text-xs text-muted-foreground">{level}%</span>
-      </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted/60">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={isInView ? { width: `${level}%` } : {}}
-          transition={{ duration: 1, delay, ease: "easeOut" }}
-          className="h-full rounded-full bg-gradient-to-r from-accent to-accent/60"
-        />
-      </div>
-    </div>
-  )
-}
-
 export function Skills() {
   const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { once: true, margin: "-80px" })
+  const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   return (
     <SectionWrapper
       id="skills"
-      title="Skills & Technologies"
-      subtitle="The tools and technologies I use to bring ideas to life."
-      className="bg-secondary/30"
+      title="Foundations of Innovation"
+      subtitle="A curated selection of technologies I've mastered to bridge the gap between complex algorithms and user-centric applications."
     >
-      <div ref={ref} className="grid gap-6 md:grid-cols-2">
-        {skillCategories.map((cat, catIndex) => (
+      <div
+        ref={ref}
+        className="grid grid-cols-1 md:grid-cols-4 gap-4 auto-rows-[160px]"
+      >
+        {skillCategories.map((cat, i) => (
           <motion.div
             key={cat.title}
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: catIndex * 0.12, ease: "easeOut" }}
-            className="glass rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-accent/5 hover:border-accent/20"
+            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
+            className={`glass-card group relative overflow-hidden p-8 flex flex-col justify-between rounded-[2rem] border border-zinc-200/50 hover:border-primary/40 ${cat.className}`}
           >
-            <h3
-              className="mb-5 text-lg font-semibold text-foreground"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              {cat.title}
-            </h3>
-            <div className="space-y-4">
-              {cat.skills.map((skill, skillIndex) => (
-                <SkillBar
-                  key={skill.name}
-                  name={skill.name}
-                  level={skill.level}
-                  delay={catIndex * 0.12 + skillIndex * 0.06}
-                  isInView={isInView}
-                />
+            {/* Hover Background Glow */}
+            <div
+              className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full blur-[100px] opacity-0 transition-opacity duration-700 group-hover:opacity-10"
+              style={{ background: cat.color }}
+            />
+
+            <div className="relative z-10 flex flex-col gap-6">
+              <div
+                className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/5 transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/10"
+                style={{ color: cat.color }}
+              >
+                <cat.icon className="h-7 w-7" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-black tracking-tight text-foreground mb-3">{cat.title}</h3>
+                <p className="text-sm font-medium text-zinc-500 leading-relaxed line-clamp-2 md:line-clamp-none">
+                  {cat.description}
+                </p>
+              </div>
+            </div>
+
+            <div className="relative z-10 flex flex-wrap gap-2.5 pt-6">
+              {cat.skills.map(skill => (
+                <span
+                  key={skill}
+                  className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-500 border border-zinc-200/60 rounded-full bg-white transition-all group-hover:border-primary/20 group-hover:text-primary"
+                >
+                  {skill}
+                </span>
               ))}
             </div>
           </motion.div>
