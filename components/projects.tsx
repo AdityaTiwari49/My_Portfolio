@@ -57,8 +57,8 @@ function ProjectCard({ project, index, isInView }: { project: any, index: number
   const mouseXSpring = useSpring(x, { damping: 30, stiffness: 200 })
   const mouseYSpring = useSpring(y, { damping: 30, stiffness: 200 })
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"])
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"])
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12deg", "-12deg"])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -86,13 +86,23 @@ function ProjectCard({ project, index, isInView }: { project: any, index: number
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 0.8, delay: index * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
+        whileHover={{
+          scale: 1.02,
+          z: 50,
+          boxShadow: "0 20px 40px -15px rgba(0,0,0,0.5)"
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 300,
+          damping: 20,
+          opacity: { duration: 0.8, delay: index * 0.1 }
+        }}
         style={{
           rotateX,
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="absolute inset-0"
+        className="absolute inset-0 z-10"
       >
         <div
           className="glass-card absolute inset-0 rounded-[2.5rem] border border-zinc-200/50 p-10 flex flex-col justify-between overflow-hidden bg-white/40 transition-[border-color,background-color] duration-500 group-hover:border-primary/40 group-hover:bg-white/60"
