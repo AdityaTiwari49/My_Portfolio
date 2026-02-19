@@ -78,73 +78,77 @@ function ProjectCard({ project, index, isInView }: { project: any, index: number
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay: index * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
+    <div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        transformStyle: "preserve-3d",
-      }}
       className="group relative h-[450px] w-full perspective-1000"
     >
-      <div
-        className="glass-card absolute inset-0 rounded-[2.5rem] border border-zinc-200/50 p-10 flex flex-col justify-between overflow-hidden bg-white/40 transition-all duration-500 group-hover:border-primary/40 group-hover:bg-white/60"
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.8, delay: index * 0.1, ease: [0.21, 0.47, 0.32, 0.98] }}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: "preserve-3d",
+        }}
+        className="absolute inset-0"
       >
-        {/* Background Accent */}
         <div
-          className="absolute -right-20 -top-20 h-64 w-64 rounded-full blur-[100px] opacity-0 transition-opacity duration-700 group-hover:opacity-[0.08]"
-          style={{ background: project.color }}
-        />
-
-        <div style={{ transform: "translateZ(50px)" }} className="relative z-10">
+          className="glass-card absolute inset-0 rounded-[2.5rem] border border-zinc-200/50 p-10 flex flex-col justify-between overflow-hidden bg-white/40 transition-[border-color,background-color] duration-500 group-hover:border-primary/40 group-hover:bg-white/60"
+        >
+          {/* Background Accent */}
           <div
-            className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/5 transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/10"
-            style={{ color: project.color }}
-          >
-            <project.icon className="h-8 w-8" />
+            className="absolute -right-20 -top-20 h-64 w-64 rounded-full blur-[100px] opacity-0 transition-opacity duration-700 group-hover:opacity-[0.08]"
+            style={{ background: project.color }}
+          />
+
+          <div style={{ transform: "translateZ(50px)" }} className="relative z-10">
+            <div
+              className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/5 transition-all duration-500 group-hover:scale-110 group-hover:bg-primary/10"
+              style={{ color: project.color }}
+            >
+              <project.icon className="h-8 w-8" />
+            </div>
+
+            <h3 className="text-3xl font-black tracking-tighter text-foreground mb-4 group-hover:text-primary transition-colors">
+              {project.title}
+            </h3>
+            <p className="text-zinc-500 font-medium text-sm leading-relaxed mb-6">
+              {project.description}
+            </p>
           </div>
 
-          <h3 className="text-3xl font-black tracking-tighter text-foreground mb-4 group-hover:text-primary transition-colors">
-            {project.title}
-          </h3>
-          <p className="text-zinc-500 font-medium text-sm leading-relaxed mb-6">
-            {project.description}
-          </p>
-        </div>
+          <div style={{ transform: "translateZ(30px)" }} className="relative z-10">
+            <div className="flex flex-wrap gap-2.5 mb-10">
+              {project.tags.map((tag: string) => (
+                <span
+                  key={tag}
+                  className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-500 border border-zinc-200/60 rounded-full bg-white group-hover:border-primary/20 group-hover:text-primary transition-all"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
 
-        <div style={{ transform: "translateZ(30px)" }} className="relative z-10">
-          <div className="flex flex-wrap gap-2.5 mb-10">
-            {project.tags.map((tag: string) => (
-              <span
-                key={tag}
-                className="px-4 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-zinc-500 border border-zinc-200/60 rounded-full bg-white group-hover:border-primary/20 group-hover:text-primary transition-all"
+            <div className="flex items-center gap-4">
+              <a
+                href="#"
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 transition-all hover:bg-foreground hover:text-white hover:border-foreground hover:scale-110"
               >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-4">
-            <a
-              href="#"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-500 transition-all hover:bg-foreground hover:text-white hover:border-foreground hover:scale-110"
-            >
-              <Github className="h-5 w-5" />
-            </a>
-            <a
-              href="#"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 transition-all hover:bg-primary hover:text-white hover:border-primary hover:scale-110"
-            >
-              <ExternalLink className="h-5 w-5" />
-            </a>
+                <Github className="h-5 w-5" />
+              </a>
+              <a
+                href="#"
+                className="flex h-12 w-12 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-400 transition-all hover:bg-primary hover:text-white hover:border-primary hover:scale-110"
+              >
+                <ExternalLink className="h-5 w-5" />
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   )
 }
 
