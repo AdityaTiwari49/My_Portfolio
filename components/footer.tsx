@@ -61,7 +61,7 @@ export function Footer() {
 
             <a
               href="/resume.pdf"
-              download
+              download="Aditya_Tiwari_Portfolio.pdf"
               className="group flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 transition-colors hover:text-white"
             >
               Download Portfolio

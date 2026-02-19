@@ -206,7 +206,7 @@ export function Hero() {
             </a>
           ))}
           <div className="h-5 w-[1px] bg-zinc-800" />
-          <a href="/resume.pdf" download className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-primary">
+          <a href="/resume.pdf" download="Aditya_Tiwari_Portfolio.pdf" className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.2em] transition-colors hover:text-primary">
             <FileText className="h-4 w-4" />
             Resume
           </a>

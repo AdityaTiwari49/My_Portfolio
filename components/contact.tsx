@@ -74,7 +74,7 @@ export function Contact() {
 
           <a
             href="/resume.pdf"
-            download
+            download="Aditya_Tiwari_Portfolio.pdf"
             className="group inline-flex items-center gap-4 rounded-full bg-white px-10 py-5 text-xs font-bold uppercase tracking-widest text-black transition-all hover:scale-105 active:scale-95"
           >
             <Download className="h-4 w-4" />
