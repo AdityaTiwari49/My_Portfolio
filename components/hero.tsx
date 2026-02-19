@@ -198,7 +198,7 @@ export function Hero() {
         >
           {[
             { icon: Github, href: "https://github.com/AdityaTiwari49" },
-            { icon: Linkedin, href: "https://linkedin.com/in/adityatiwari49" },
+            { icon: Linkedin, href: "https://www.linkedin.com/in/aditya-tiwari-1757b732b" },
             { icon: Mail, href: "mailto:adityatiwari@example.com" },
           ].map((item, i) => (
             <a key={i} href={item.href} target="_blank" className="transition-colors hover:text-primary">
