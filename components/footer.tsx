@@ -1,6 +1,6 @@
 "use client"
 
-import { Linkedin, Mail, Github, ArrowUp } from "lucide-react"
+import { Linkedin, Mail, Github, ArrowUp, Download } from "lucide-react"
 import { motion } from "framer-motion"
 
 const socialLinks = [
@@ -58,6 +58,17 @@ export function Footer() {
                 <ArrowUp className="h-4 w-4 transition-transform group-hover:-translate-y-1" />
               </div>
             </button>
+
+            <a
+              href="/resume.pdf"
+              download
+              className="group flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.3em] text-zinc-500 transition-colors hover:text-white"
+            >
+              Download Portfolio
+              <div className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-transparent transition-all group-hover:border-white group-hover:bg-white group-hover:text-black shadow-sm">
+                <Download className="h-4 w-4 transition-transform group-hover:scale-110" />
+              </div>
+            </a>
           </div>
         </div>
 
