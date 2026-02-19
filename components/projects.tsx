@@ -57,8 +57,8 @@ function ProjectCard({ project, index, isInView }: { project: any, index: number
   const mouseXSpring = useSpring(x, { damping: 30, stiffness: 200 })
   const mouseYSpring = useSpring(y, { damping: 30, stiffness: 200 })
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12deg", "-12deg"])
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"])
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"])
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"])
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -87,9 +87,9 @@ function ProjectCard({ project, index, isInView }: { project: any, index: number
         initial={{ opacity: 0, y: 30 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
         whileHover={{
-          scale: 1.02,
-          z: 50,
-          boxShadow: "0 20px 40px -15px rgba(0,0,0,0.5)"
+          scale: 1.01,
+          z: 20,
+          boxShadow: "0 10px 30px -10px rgba(0,0,0,0.2)"
         }}
         transition={{
           type: "spring",
