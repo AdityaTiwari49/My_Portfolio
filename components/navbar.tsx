@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Download, ShieldCheck } from "lucide-react"
+import { ResumeModal } from "./resume-modal"
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -96,14 +97,14 @@ export function Navbar() {
 
             <div className={`h-4 w-[1px] transition-colors duration-500 ${scrolled || mobileOpen ? "bg-zinc-200" : "bg-white/10"}`} />
 
-            <a
-              href="/resume.pdf"
-              download
-              className={`group flex items-center gap-2 rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-background transition-all hover:scale-105 active:scale-95 ${scrolled || mobileOpen ? "bg-foreground text-background" : "bg-white text-black"}`}
-            >
-              <Download className="h-3 w-3" />
-              Resume
-            </a>
+            <ResumeModal>
+              <button
+                className={`group flex items-center gap-2 rounded-full px-6 py-2.5 text-[10px] font-bold uppercase tracking-[0.2em] text-background transition-all hover:scale-105 active:scale-95 ${scrolled || mobileOpen ? "bg-foreground text-background" : "bg-white text-black"}`}
+              >
+                <Download className="h-3 w-3" />
+                Resume
+              </button>
+            </ResumeModal>
           </div>
 
           {/* Mobile Actions */}
@@ -156,14 +157,14 @@ export function Navbar() {
                   </a>
                 ))}
               </div>
-              <a
-                href="/resume.pdf"
-                download
-                className="mb-6 flex items-center justify-center gap-3 rounded-2xl bg-foreground py-5 text-[10px] font-bold uppercase tracking-[0.2em] text-background transition-all active:scale-95 shadow-lg shadow-black/10"
-              >
-                <Download className="h-4 w-4" />
-                Download Portfolio PDF
-              </a>
+              <ResumeModal>
+                <button
+                  className="mb-6 flex w-full items-center justify-center gap-3 rounded-2xl bg-foreground py-5 text-[10px] font-bold uppercase tracking-[0.2em] text-background transition-all active:scale-95 shadow-lg shadow-black/10"
+                >
+                  <Download className="h-4 w-4" />
+                  Download Portfolio PDF
+                </button>
+              </ResumeModal>
             </motion.div>
           )}
         </AnimatePresence>
